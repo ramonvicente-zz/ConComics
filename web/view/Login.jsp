@@ -39,7 +39,7 @@
                                         <a class="navbar-brand" href="#">ConComics</a>
 				</div>
                                     
-                                <ul class="nav navbar-nav navbar-right">
+                                <ul class="nav navbar-nav">
 				<li class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Navegar
                                       <span class="caret"></span>
@@ -55,13 +55,32 @@
 
 				<div class="top-searchbar">
 					<form>
-						<input type="text" /><input type="submit" value="" />
+						<input type="text" name="pesquisaMenu" class="inline"/>
+                                                <button type="submit" href="#" class="btn btn-default btn-lg">
+                                                    <span class="glyphicon glyphicon-search"></span>
+                                                </button>
+                                                
 					</form>
 				</div>
 				<div class="userinfo">
-					<div class="user">
-						<ul>
-							<li><a href="#"><img src="public/images/user-pic.png" title="user-name" /><span>Ipsum</span></a></li>
+					<div class="user collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right">
+                                                    <% if(session.getAttribute("nomeLogin")==null){ %>
+                                                        <li><a href="#">Login</a></li>
+                                                        <li><a href="#">Cadastrar-se</a></li>
+                                                    <%}else{ %>
+                                                        <li class="dropdown">
+                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Olá, <%session.getAttribute("nome");%>
+                                                              <span class="caret"></span>
+                                                            </a>
+                                                            <ul class="dropdown-menu">
+                                                              <li><a href="#">Meu Perfil</a></li>
+                                                              <li><a href="#">Meus Catálogos</a></li>
+                                                              <li><a href="#">Minha Lista</a></li>
+                                                              <li><a href="#">Encerrar Sessão</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    <% } %>
 						</ul>
 					</div>
 				</div>
@@ -77,22 +96,18 @@
                       <div class="col-sm-12">
                         <div class="panel panel-default text-center">
                           <div class="panel-heading">
-                            <h1>Basic</h1>
+                            <h1>Login</h1>
                           </div>
                           <div class="panel-body">
-                            <p><strong>20</strong> Lorem</p>
-                            <p><strong>15</strong> Ipsum</p>
-                            <p><strong>5</strong> Dolor</p>
-                            <p><strong>2</strong> Sit</p>
-                            <p><strong>Endless</strong> Amet</p>
-                            <% 
-                                Date data = new Date();
-                            %>
-                            <%=
-                               data %>
+                            <form action="" method="">
+                                Email: <input type="email" name="emailLogin"><br><br>
+                                Senha: <input type="password" name="senhaLogin"><br><br>
+                                <button type="submit">Entrar</button><br>
+                            </form>
                           </div>
                         </div>
                       </div>
                     </div>
+                </div>
         </body>
 </html>
