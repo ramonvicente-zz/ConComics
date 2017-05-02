@@ -6,13 +6,16 @@
 
 package com.concomics.controller;
 
+import com.concomics.model.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -74,6 +77,18 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+        HttpSession sessao = request.getSession();
+        Usuario novoUsr = new Usuario();
+        
+        String email = request.getParameter("emailLogin");
+        String senha = request.getParameter("senhaLogin");
+        
+        sessao.setAttribute("emailLogin", email);
+        sessao.setAttribute("senhaLogin", senha);
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/view/index.jsp");
+        dispatcher.forward(request, response);
     }
 
     /**
