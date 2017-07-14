@@ -14,17 +14,17 @@ import java.util.List;
 public class Comentario implements GenericoDAO<Comentario>{
 
     @Override
-    public boolean criar(Comentario objeto) {
+    public void criar(Comentario objeto) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean deletar(Comentario objeto) {
+    public void deletar(long id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean atualizar(Comentario objeto) {
+    public void atualizar(Comentario objeto) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

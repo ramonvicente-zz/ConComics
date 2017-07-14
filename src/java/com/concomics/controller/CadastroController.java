@@ -6,7 +6,8 @@
 
 package com.concomics.controller;
 
-import com.concomics.model.Usuario;
+import com.concomics.model.bo.Usuario;
+import com.concomics.model.dao.UsuarioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -21,25 +22,17 @@ import javax.servlet.http.HttpSession;
  *
  * @author Aluno
  */
-@WebServlet("/cadastro")
+@WebServlet(name = "cadastro", urlPatterns = {"/cadastro"})
 public class CadastroController extends HttpServlet {
 
-    
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-      
+        RequestDispatcher dispatcher = request.getRequestDispatcher("view/login.jsp");
+        dispatcher.forward(request, response);
+        
     }
 
     /**
@@ -61,11 +54,17 @@ public class CadastroController extends HttpServlet {
         String email = request.getParameter("emailCadastro");
         String senha = request.getParameter("senhaCadastro");
         
-        sessao.setAttribute("nome", nome);
-        sessao.setAttribute("email", email);
-        sessao.setAttribute("senha", senha);
+        novoUsr.setNome(nome);
+        novoUsr.setEmail(email);
+        novoUsr.setSenha(senha);
+        novoUsr.setTipoUsuarioFk(2);
         
-        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/view/Login.jsp");
+        UsuarioDAO usrDAO = new UsuarioDAO();
+        usrDAO.criar(novoUsr);
+        
+        /*sessao.setAttribute("nome", nome);
+        sessao.setAttribute("e", nome);*/
+        RequestDispatcher dispatcher = request.getRequestDispatcher("view/index.jsp");
         dispatcher.forward(request, response);
         
     }

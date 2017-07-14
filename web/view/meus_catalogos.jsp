@@ -1,84 +1,100 @@
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML>
-<html>
-	<head>
-		<title>Pinball Website Template | Home :: w3layouts</title>
-		<link href="public/css/style.css" rel='stylesheet' type='text/css' />
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="shortcut icon" type="image/x-icon" href="public/images/fav-icon.png" />
-		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-		
-		<!----webfonts---->
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
-		<!----//webfonts---->
-		<!-- Global CSS for the page and tiles -->
-  		<link rel="stylesheet" href="public/css/main.css">
-  		<!-- //Global CSS for the page and tiles -->
-		<!---start-click-drop-down-menu----->
-		<script src="public/js/jquery.min.js"></script>
-        <!----start-dropdown--->
-         
-        <!----//End-dropdown--->
-		<!---//End-click-drop-down-menu----->
-	</head>
-	<body>
-		<!---start-wrap---->
-			<!---start-header---->
-			<nav class="navbar navbar-default navbar-fixed-top header">
-				<div class="wrap">
-				<div class="logo navbar-headr">
-					<!--<a href="index.html"><img src="images/logo.png" title="pinbal" /></a>-->
-                                        <a class="navbar-brand" href="#">ConComics</a>
-				</div>
-                                    
-                                <ul class="nav navbar-nav">
-				<li class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Navegar
-                                      <span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                      <li><a href="#">Aventura</a></li>
-                                      <li><a href="#">A√ß√£o</a></li>
-                                      <li><a href="#">Terror</a></li>
-                                      <li><a href="#">Fici√ß√£o</a></li>
-                                    </ul>
-                                </li>
-                                </ul>
+<%@page import="com.concomics.model.bo.Catalogo"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="com.concomics.model.bo.Usuario"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:import url="cabecalho.jsp" />
 
-				<div class="top-searchbar">
-					<form>
-						<input type="text" name="pesquisaMenu" class="inline"/>
-                                                <button type="submit" href="#" class="btn btn-default btn-lg">
-                                                    <span class="glyphicon glyphicon-search"></span>
-                                                </button>
-                                                
-					</form>
-				</div>
-				<div class="userinfo">
-					<div class="user collapse navbar-collapse">
-						<ul class="nav navbar-nav navbar-right">
-                                                    <% if(session.getAttribute("nomeLogin")==null){ %>
-                                                        <li><a href="#">Login</a></li>
-                                                        <li><a href="#">Cadastrar-se</a></li>
-                                                    <%}else{ %>
-                                                        <li class="dropdown">
-                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Ol√°, <%session.getAttribute("nome");%>
-                                                              <span class="caret"></span>
-                                                            </a>
-                                                            <ul class="dropdown-menu">
-                                                              <li><a href="#">Meu Perfil</a></li>
-                                                              <li><a href="#">Meus Cat√°logos</a></li>
-                                                              <li><a href="#">Minha Lista</a></li>
-                                                              <li><a href="#">Encerrar Sess√£o</a></li>
-                                                            </ul>
-                                                        </li>
-                                                    <% } %>
-						</ul>
-					</div>
-				</div>
-				<div class="clear"> </div>
-                            </div>
-                        </nav>
-        </body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Meus Cat·logos</h2>
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#catalogoModal">Novo Cat·logo</button>
+            <br><br>
+        </div>
+        
+        <c:forEach items="${catalogos}" var="catalogo"> 
+        <div class="container">
+           <div class="row">
+                <div class="col-sm-12">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h1><c:out value="${catalogo.titulo}"/></h1>
+                      <button type="button" class="btn btn-info btn-lg right text-right" data-toggle="modal" data-target="#${catalogo.titulo}">Nova Historia</button>
+                    </div>
+                    <div class="panel-body">
+                      <form action="login" method="POST">
+                          Email: <input type="email" name="emailLogin" required><br><br>
+                          Senha: <input type="password" name="senhaLogin" required><br><br>
+                          <button type="submit">Entrar</button><br>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+         <!--Modal de HistÛria-->
+        <div id="${catalogo.titulo}" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Nova HistÛria</h4>
+              </div>
+
+              <div class="modal-body">
+                <form action="historias" method="POST">
+                    TÌtulo: <input type="text" class="form-control" name="tituloHistoria"><br>
+                    GÍnero: <select name="generoHistoria" class="form-control">
+                                <option value="">Selecione um gÍnero</option>
+                                <c:forEach items="${generos}" var="genero">
+                                    <option value="<c:out value="${genero.id_genero}"/>"><c:out value="${genero.descricao}"/></option>
+                                </c:forEach>
+                            </select><br><br>
+                                Sinopse:<textarea class="form-control" rows="4" cols="30" name="descricaoHistoria"></textarea>
+                    <h3>HistÛria</h3>
+                    <textarea class="form-control" rows="10" cols="70" name="historia"></textarea>
+                    <input type="hidden" name="usuarioHistoria" value="<c:out value="${catalogo.usuarioFk}"/>" >
+                    <input type="hidden" name="catalogoHistoria" value="<c:out value="${catalogo.id_catalogo}"/>">
+                    <br><br>
+              </div>
+              <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Publicar</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        </c:forEach>
+    </div>
+</div>
+
+<!--Modal de Catalogo-->
+<div id="catalogoModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+      
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Novo Cat·logo</h4>
+      </div>
+         <% Usuario atualUsr = (Usuario) session.getAttribute("usuarioAtual");%>
+      <div class="modal-body">
+        <form action="catalogos" method="POST">
+            TÌtulo: <input type="text" name="tituloCatalogo">
+            <input type="hidden" name="usuarioCatalogo" value="<%=atualUsr.getId_usuario()%>">
+            <br><br>
+      </div>
+      <div class="modal-footer">
+            <button type="submit" class="btn btn-default">Adicionar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>  
+
+
+</body>
 </html>

@@ -1193,5 +1193,9 @@ span.mail a:hover{
 	.span_1_of_first1 h5 {
 		font-size: 1em;
 	}
+        
+        .inline {
+            float:left;
+        }
 }
 /*--//End-media Quries for 320px-monitors-*/

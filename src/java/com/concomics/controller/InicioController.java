@@ -5,7 +5,7 @@
  */
 package com.concomics.controller;
 
-import com.concomics.model.Usuario;
+import com.concomics.model.bo.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -20,18 +20,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author ramones
  */
-@WebServlet(name = "InicioController", urlPatterns = {"/InicioController"})
+@WebServlet(name = "inicio", urlPatterns = {"/inicio"})
 public class InicioController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -68,6 +60,10 @@ public class InicioController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("view/index.jsp");
+        dispatcher.forward(request, response);
+        
     }
 
     /**

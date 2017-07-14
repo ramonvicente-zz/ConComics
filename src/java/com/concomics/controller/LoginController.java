@@ -6,7 +6,8 @@
 
 package com.concomics.controller;
 
-import com.concomics.model.Usuario;
+import com.concomics.model.bo.Usuario;
+import com.concomics.model.dao.UsuarioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Aluno
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
+@WebServlet(name = "login", urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -37,44 +38,40 @@ public class LoginController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession sessao = request.getSession();
-        Usuario novoUsr = (Usuario) sessao.getAttribute("usuario");
-        
-        if (novoUsr == null) {
-            novoUsr = new Usuario();
-            sessao.setAttribute("usuario", novoUsr);
-        }
         
         RequestDispatcher dispatcher = request.getRequestDispatcher("view/Login.jsp");
         dispatcher.forward(request, response);
         
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
+        HttpSession session = request.getSession();
         
-        HttpSession sessao = request.getSession();
-        Usuario novoUsr = (Usuario) sessao.getAttribute("usuario");
+        Usuario novoUsr = new Usuario();
+        novoUsr.setEmail(request.getParameter("emailLogin"));
+        novoUsr.setSenha(request.getParameter("senhaLogin"));
         
-        String email = request.getParameter("emailLogin");
-        String senha = request.getParameter("senhaLogin");
-
-        novoUsr.setEmail(email);
-        novoUsr.setSenha(senha);
+         UsuarioDAO usrVerifica = new UsuarioDAO();
         
-        RequestDispatcher dispatcher = request.getRequestDispatcher("view/index.jsp");
-        dispatcher.forward(request, response);
-
+        if(usrVerifica.autenticacao(novoUsr)){
+                
+            session.setAttribute("usuarioAtual",novoUsr); 
+            
+            //response.sendRedirect("view/index.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("view/index.jsp");
+            dispatcher.forward(request, response);
+            
+        } else{
+            
+            session.setAttribute("error", "Email ou senha não encontrados");
+            
+            RequestDispatcher dispatcher = request.getRequestDispatcher("view/Login.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     /**

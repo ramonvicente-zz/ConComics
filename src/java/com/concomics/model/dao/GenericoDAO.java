@@ -14,9 +14,9 @@ import java.util.List;
  */
 public interface GenericoDAO<T> {
     
-    public boolean criar(T objeto);
-    public boolean deletar(T objeto);
-    public boolean atualizar(T objeto);
+    public void criar(T objeto);
+    public void deletar(long id);
+    public void atualizar(T objeto);
     public List<T> listar();
     
 }
