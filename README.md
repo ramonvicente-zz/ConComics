@@ -1,2 +1,2 @@
 # ConComics
-Projeto web para disciplina de Web 2.
+Projeto web para disciplina de Desenvolvimento Web 2.
